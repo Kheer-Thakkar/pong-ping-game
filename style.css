@@ -1,7 +1,13 @@
 body
 {
-
+background-image: cover;
 }
 .heading{
     width: 100%;
+}
+
+canvas{
+    border: 2px solid white;
+    border-radius: 00px;
+    margin-top: 115px;
 }
