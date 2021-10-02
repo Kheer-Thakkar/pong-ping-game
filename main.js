@@ -1,6 +1,11 @@
 
-/*created by prashant shukla */
+game_status="";
+scoreRightWrist = 0;
 
+rightWristX = 0;
+rightWristY = 0;
+
+/*created by prashant shukla */
 var paddle2 =10,paddle1=10;
 
 var paddle1X = 10,paddle1Height = 110;
@@ -29,8 +34,7 @@ function setup(){
   var canvas =  createCanvas(700,600);
   canvas.parent('canvas');
   video=createCapture(VIDEO);
-	video.size(700,600);
-	video.parent('game_console');
+	video.size(7000,600);
   video.hide()
 	poseNet=ml5.poseNet(video, modelLoaded);
 	poseNet.on('pose',gotPoses);
@@ -41,19 +45,28 @@ function modelLoaded(){
 	console.log('Model Loaded!');
 }
 
-function gotPoses(results){
-	if(results.length>0){
-		noseX=results[0].pose.nose.x;
-		noseY=results[0].pose.nose.y;
-		console.log("noseX="+noseX+"noseY="+noseY);
-	}
-}
 
+function gotPoses(results) {
+	if (results.length > 0) {
+		console.log(results);
+		scoreRightWristWrist = results[0].pose.keypoints[10].score;
+		console.log("scoreRightWrist=" + scoreRightWristWrist);
+		
+		rightWristX = results[0].pose.rightWrist.x;
+		rightWristY = results[0].pose.rightWrist.y;
+		console.log("rightWristX=" + rightWristX + "rightWristY=" + rightWristY);
+
+  }
+
+}
+function startGame(){
+game_status="start";
+}
 
 function draw(){
 
  background(0); 
-
+image(video,0, 0, 0,700,600);
  fill("black");
  stroke("black");
  rect(680,0,20,700);
@@ -61,11 +74,21 @@ function draw(){
  fill("black");
  stroke("black");
  rect(0,0,20,700);
+
+ if(scoreRightWrist>0.2){
+     fill("red");
+     stroke("red");
+     circle(rightWristX,rightWristY,30);
+ }
+ if(game_status=="start"){
+     console.log("game is loaded!");
+     document.getElementById("game loaded");
+ 
  
    //funtion paddleInCanvas call 
    paddleInCanvas();
  
-   //left paddle
+   //left paddl0
    fill(250,0,0);
     stroke(0,0,250);
     strokeWeight(0.5);
@@ -89,6 +112,7 @@ function draw(){
    
    //function move call which in very important
     move();
+}
 }
 
 
